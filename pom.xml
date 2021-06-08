@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>FB-Knockback</artifactId>
-    <version>v1.1</version>
+    <version>v2.0</version>
     <build>
         <plugins>
             <plugin>
