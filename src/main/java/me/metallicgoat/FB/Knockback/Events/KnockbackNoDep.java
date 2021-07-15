@@ -1,11 +1,12 @@
 package me.metallicgoat.FB.Knockback.Events;
 
-import de.marcely.bedwars.api.BedwarsAPI;
-import de.marcely.bedwars.api.arena.Arena;
 import me.metallicgoat.FB.Knockback.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -13,7 +14,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 
 import java.util.List;
 
-public class Knockback implements Listener {
+public class KnockbackNoDep implements Listener {
     @EventHandler
     public void onExplode(EntityExplodeEvent e){
         Main plugin = Main.getInstance();
@@ -26,10 +27,7 @@ public class Knockback implements Listener {
                 double rf = plugin.getConfig().getDouble("Knockback.radius-force") / 2;
                 for (Entity entity : nearbyEntities) {
                     if (entity instanceof Player) {
-                        Arena arena = BedwarsAPI.getGameAPI().getArenaByPlayer((Player) entity);
-                        if (arena != null){
-                            pushAway((LivingEntity) entity, l, hf, rf, e);
-                        }
+                        pushAway((LivingEntity) entity, l, hf, rf, e);
                     }
                 }
             }

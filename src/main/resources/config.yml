@@ -1,11 +1,13 @@
-#if you set the force configs any higher 8,
-#you may not see much change to the knockback as it is about the limit
-Knockback:
-  radius: 3
-  Fireball:
-    Enabled: true
-    radius-force: 3
-    height-force: 1.5
+#########################################
+#FB-Knockback by MetallicGoat
+#########################################
 
-#Set the fuse time of tnt
-TNT-Fuse-Time: 5
+#Note: The damage config will effect both the thrower, and the target
+#Whereas MBedwars's will only effect the target player
+
+Knockback:
+  enabled: true
+  damage: 0
+  radius: 3
+  radius-force: 3
+  height-force: 1.5

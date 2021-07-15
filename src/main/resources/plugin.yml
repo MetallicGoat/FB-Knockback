@@ -3,8 +3,8 @@ version: 2.0
 author: MetallicGoat
 main: me.metallicgoat.FB.Knockback.Main
 api-version: 1.13
-description: Gen Splitter for MBedwars
-depend: [MBedwars]
+description: FireBall Jumping for MBedwars
+softdepend: [MBedwars]
 commands:
   FB-knockback:
     usage: /<command>
