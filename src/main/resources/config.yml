@@ -11,3 +11,15 @@ Knockback:
   radius: 3
   radius-force: 3
   height-force: 1.5
+
+#Cooldown time in ticks
+#(20 ticks = 1 second)
+Cooldown:
+  enabled: true
+  time: 20
+
+#Default is like hypixel
+Throw-Effects:
+  enabled: true
+  effects:
+    - 'SLOW:25:1'

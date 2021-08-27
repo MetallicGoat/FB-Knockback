@@ -2,6 +2,7 @@ package me.metallicgoat.FB.Knockback.Events;
 
 import de.marcely.bedwars.api.BedwarsAPI;
 import de.marcely.bedwars.api.arena.Arena;
+import de.marcely.bedwars.api.event.player.PlayerUseSpecialItemEvent;
 import me.metallicgoat.FB.Knockback.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -10,10 +11,53 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Knockback implements Listener {
+
+    private final ArrayList<Player> coolDownPlayers = new ArrayList<>();
+
+    @EventHandler
+    public void onSpecialItemUse(PlayerUseSpecialItemEvent e){
+        Main plugin = Main.getInstance();
+        if (e.getSpecialItem().getId().equalsIgnoreCase("Fireball")) {
+
+            //CoolDown
+            if(plugin.getConfig().getBoolean("Cooldown.enabled")) {
+                if (!coolDownPlayers.contains(e.getPlayer())) {
+                    coolDownPlayers.add(e.getPlayer());
+                    Bukkit.getServer().getScheduler().runTaskLater(plugin, () ->
+                            coolDownPlayers.remove(e.getPlayer()), plugin.getConfig().getLong("Cooldown.time"));
+                } else {
+                    e.setCancelled(true);
+                }
+            }
+
+            //Effects
+            if(plugin.getConfig().getBoolean("Throw-Effects.enabled")) {
+                List<String> effects = plugin.getConfig().getStringList("Throw-Effects.effects");
+                if(effects != null) {
+                    effects.forEach(element -> {
+
+                        String[] tokens = element.split(":");
+
+                        PotionEffectType effect = PotionEffectType.getByName(tokens[0].toUpperCase());
+
+                        if (effect != null) {
+                            e.getPlayer().addPotionEffect(new PotionEffect(effect,
+                                    Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]),
+                                    true, false));
+                        }
+                    });
+                }
+            }
+        }
+    }
+
     @EventHandler
     public void onExplode(EntityExplodeEvent e){
         Main plugin = Main.getInstance();
