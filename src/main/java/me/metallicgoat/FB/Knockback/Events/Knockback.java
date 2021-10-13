@@ -81,6 +81,9 @@ public class Knockback implements Listener {
     }
 
     void pushAway(LivingEntity player, Location l, double hf, double rf, EntityExplodeEvent e) {
+
+        System.out.println(1);
+
         Main plugin = Main.getInstance();
 
         final Location loc = player.getLocation();
