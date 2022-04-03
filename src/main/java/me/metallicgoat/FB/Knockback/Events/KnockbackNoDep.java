@@ -11,12 +11,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import javax.persistence.EnumType;
 import java.util.List;
 
 public class KnockbackNoDep implements Listener {
@@ -48,7 +50,14 @@ public class KnockbackNoDep implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onDamage(EntityDamageByEntityEvent e){
+        if(e.getDamager().getType() == EntityType.FIREBALL){
+            e.setDamage(0);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
     public void onExplode(EntityExplodeEvent e){
         Main plugin = Main.getInstance();
         Location l = e.getLocation();

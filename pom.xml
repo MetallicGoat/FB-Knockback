@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>FB-Knockback</artifactId>
-    <version>v2.1.0</version>
+    <version>v2.1.1</version>
     <repositories>
         <repository>
             <id>spigot-repo</id>
@@ -28,7 +28,7 @@
         <dependency>
             <groupId>de.marcely.bedwars</groupId>
             <artifactId>API</artifactId>
-            <version>5.0-Beta6</version>
+            <version>5.0.5.1</version>
         </dependency>
     </dependencies>
 

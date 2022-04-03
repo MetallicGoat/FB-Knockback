@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,14 +66,27 @@ public class Knockback implements Listener {
         double radius = plugin.getConfig().getDouble("Knockback.radius");
         List<Entity> nearbyEntities = (List<Entity>) l.getWorld().getNearbyEntities(l, radius, radius, radius);
         if(e.getEntityType() == EntityType.FIREBALL) {
-            if (plugin.getConfig().getBoolean("Knockback.enabled")) {
-                double hf = plugin.getConfig().getDouble("Knockback.height-force") / 2;
-                double rf = plugin.getConfig().getDouble("Knockback.radius-force") / 2;
-                for (Entity entity : nearbyEntities) {
-                    if (entity instanceof Player) {
-                        Arena arena = BedwarsAPI.getGameAPI().getArenaByPlayer((Player) entity);
-                        if (arena != null){
-                            pushAway((LivingEntity) entity, l, hf, rf, e);
+
+            Fireball fb = (Fireball) e.getEntity();
+            ProjectileSource thrower = fb.getShooter();
+
+            if(thrower instanceof Player){
+                Player pThrower = (Player) thrower;
+
+                if (plugin.getConfig().getBoolean("Knockback.enabled")) {
+                    double hf = plugin.getConfig().getDouble("Knockback.height-force") / 2;
+                    double rf = plugin.getConfig().getDouble("Knockback.radius-force") / 2;
+                    for (Entity entity : nearbyEntities) {
+                        if (entity instanceof Player) {
+                            Player push = (Player) entity;
+
+                            if(pThrower != push)
+                                return;
+
+                            Arena arena = BedwarsAPI.getGameAPI().getArenaByPlayer((Player) entity);
+                            if (arena != null){
+                                pushAway((LivingEntity) entity, l, hf, rf, e);
+                            }
                         }
                     }
                 }
@@ -96,7 +110,9 @@ public class Knockback implements Listener {
 
         final EntityDamageEvent DamageEvent = new EntityDamageEvent(player,
                 EntityDamageEvent.DamageCause.BLOCK_EXPLOSION, distance - loc.distance(player.getLocation()) + damage);
+
         Bukkit.getPluginManager().callEvent(DamageEvent);
+
         if (!DamageEvent.isCancelled()) {
             player.damage(DamageEvent.getFinalDamage());
         }
